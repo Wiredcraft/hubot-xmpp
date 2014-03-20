@@ -21,9 +21,9 @@ _notify = (status) ->
       port:
         urlObj.port
       path:
-        urlObj.pathname + '?org=' + org + '&status=' + status + '&timestamp=' + Date.now()
+        "#{urlObj.pathname}?org=#{org}&status=#{status}&timestamp=#{Date.now()}&jid=#{process.env.HUBOT_XMPP_USERNAME}"
       auth:
-        username + ':' + password
+        "#{username}:#{password}"
 
 class XmppBot extends Adapter
   run: ->
@@ -82,7 +82,7 @@ class XmppBot extends Adapter
     @unlockRoom room for room in @options.rooms
 
     #
-    #@notify 'online'
+    @notify 'online'
 
     # send raw whitespace for keepalive
     @keepaliveInterval = setInterval =>
@@ -363,7 +363,7 @@ class XmppBot extends Adapter
     @robot.logger.debug "Received offline event"
     clearInterval(@keepaliveInterval)
 
-    #@notify 'offline'
+    @notify 'offline'
 
 exports.use = (robot) ->
   new XmppBot robot
