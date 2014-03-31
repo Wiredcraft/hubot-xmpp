@@ -3,10 +3,16 @@
   "version": "0.1.7",
   "author": "Mark Story <mark@mark-story.com> (http://mark-story.com)",
   "description": "XMPP adapter for Hubot.",
-  "keywords": ["hubot", "xmpp", "adapter"],
-  "licenses": [{
-    "type": "MIT"
-  }],
+  "keywords": [
+    "hubot",
+    "xmpp",
+    "adapter"
+  ],
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/markstory/hubot-xmpp.git"
@@ -21,7 +27,8 @@
   "engine": "node > 0.6.0 < 0.8.0",
   "dependencies": {
     "node-xmpp": "0.3.2",
-    "node-expat": "1.6.1"
+    "node-expat": "1.6.1",
+    "request": "^2.34.0"
   },
   "devDependencies": {
     "coffee-script": "1.1.3",

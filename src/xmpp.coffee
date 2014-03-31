@@ -2,7 +2,7 @@
 
 url     = require 'url'
 util    = require 'util'
-http    = require 'http'
+request = require 'request'
 Xmpp    = require 'node-xmpp'
 
 #
@@ -20,7 +20,7 @@ _notify = (robot, status) ->
     robot.logger.info util.inspect(urlObj)
 
     parameters = "#{urlObj.pathname}?org=#{org}&status=#{status}&timestamp=#{now}&jid=#{jid}"
-    auth = "#{username}:#{password}"
+    auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
     robot.logger.info "Going to notify api status"
     robot.logger.info "Status: #{status}"
@@ -31,16 +31,15 @@ _notify = (robot, status) ->
     robot.logger.info "Parameters: #{parameters}"
     robot.logger.info "Auth: #{auth}"
 
-    http.get(
-      hostname:
-        urlObj.hostname
-      port:
-        urlObj.port
-      path:
-        parameters
-      auth:
-        auth).on 'error', (err) ->
-            robot.logger.error err.toString()
+    request.get notifyUrl, {qs:
+                                org: org
+                                jid: jid
+                                status: status
+                                timestamp: now
+                            auth:
+                                auth
+                            }, (err) ->
+                                robot.logger.error err.toString()
 
     return
 
