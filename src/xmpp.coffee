@@ -6,7 +6,7 @@ http    = require 'http'
 Xmpp    = require 'node-xmpp'
 
 #
-_notify = (status) ->
+_notify = (robot, status) ->
   org = process.env.HUBOT_ORG_NAME
   notifyUrl = process.env.HUBOT_NOTIFY_URL
   username = process.env.API_AUTH_USERNAME
@@ -15,6 +15,14 @@ _notify = (status) ->
   #
   if (org and notifyUrl and username and password)
     urlObj = url.parse(notifyUrl)
+
+    robot.logger.info "Going to notify api status"
+    robot.logger.info status
+    robot.logger.info util.inspect(urlObj)
+    robot.logger.info process.env.HUBOT_ORG_NAME
+    robot.logger.info process.env.HUBOT_XMPP_USERNAME
+    robot.logger.info process.env.API_AUTH_PASSWORD
+    robot.logger.info process.env.API_AUTH_USERNAME
 
     http.get
       hostname:
@@ -117,7 +125,7 @@ class XmppBot extends Adapter
   notify: (status) =>
     @robot.logger.info "Notify to #{process.env.HUBOT_NOTIFY_URL} status #{status}"
 
-    _notify status
+    _notify @robot, status
 
   # Direct inviation - http://xmpp.org/extensions/xep-0249.html
   directlyInvite: (invitor, invitee, room, reason='') ->
