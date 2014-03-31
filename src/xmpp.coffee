@@ -36,7 +36,8 @@ _notify = (robot, status) ->
                                 jid: jid
                                 status: status
                                 timestamp: now
-                            #auth: auth
+                            headers:
+                                Authorization: auth
                             strictSSL: false
                             }, (err) ->
                                 robot.logger.error err.toString() if err
