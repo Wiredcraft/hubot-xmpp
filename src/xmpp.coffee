@@ -38,8 +38,10 @@ _notify = (robot, status) ->
                                 timestamp: now
                             auth:
                                 auth
+                            strictSSL:
+                                false
                             }, (err) ->
-                                robot.logger.error err.toString()
+                                robot.logger.error err.toString() if err
 
     return
 
