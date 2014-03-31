@@ -7,22 +7,26 @@ Xmpp    = require 'node-xmpp'
 
 #
 _notify = (robot, status) ->
+  jid = process.env.HUBOT_XMPP_USERNAME
   org = process.env.HUBOT_ORG_NAME
   notifyUrl = process.env.HUBOT_NOTIFY_URL
   username = process.env.API_AUTH_USERNAME
   password = process.env.API_AUTH_PASSWORD
+  now = Date.now()
 
   #
-  if (org and notifyUrl and username and password)
+  if (jid and org and notifyUrl and username and password)
     urlObj = url.parse(notifyUrl)
+    parameters = "#{urlObj.pathname}?org=#{org}&status=#{status}&timestamp=#{now}&jid=#{jid}"
 
     robot.logger.info "Going to notify api status"
-    robot.logger.info status
     robot.logger.info util.inspect(urlObj)
-    robot.logger.info process.env.HUBOT_ORG_NAME
-    robot.logger.info process.env.HUBOT_XMPP_USERNAME
-    robot.logger.info process.env.API_AUTH_PASSWORD
-    robot.logger.info process.env.API_AUTH_USERNAME
+    robot.logger.info "Status: #{status}"
+    robot.logger.info "Org: #{org}"
+    robot.logger.info "Jid: #{jid}"
+    robot.logger.info "Api username: #{username}"
+    robot.logger.info "Api password: #{password}"
+    robot.logger.info "Parameters: #{parameters}"
 
     http.get
       hostname:
@@ -30,7 +34,7 @@ _notify = (robot, status) ->
       port:
         urlObj.port
       path:
-        "#{urlObj.pathname}?org=#{org}&status=#{status}&timestamp=#{Date.now()}&jid=#{process.env.HUBOT_XMPP_USERNAME}"
+        parameters
       auth:
         "#{username}:#{password}"
 
