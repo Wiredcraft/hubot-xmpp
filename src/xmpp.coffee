@@ -5,6 +5,7 @@ util    = require 'util'
 http    = require 'http'
 Xmpp    = require 'node-xmpp'
 
+#
 _notify = (status) ->
   org = process.env.HUBOT_ORG_NAME
   notifyUrl = process.env.HUBOT_NOTIFY_URL
@@ -24,6 +25,26 @@ _notify = (status) ->
         "#{urlObj.pathname}?org=#{org}&status=#{status}&timestamp=#{Date.now()}&jid=#{process.env.HUBOT_XMPP_USERNAME}"
       auth:
         "#{username}:#{password}"
+
+#
+_isMediatedInvitation = (message) ->
+    children = message.getChildrenByFilter (child) ->
+        (child.name is 'invite')
+
+    children.length > 0
+
+_isDirectInvitation = (message) ->
+    children = message.getChildrenByFilter (child) ->
+        (child.attrs.xmlns is 'jabber:x:conference' and child.attrs.jid and child.attrs.reason)
+
+    children.length > 0
+
+_getMediateInvitationData = (message) ->
+    room: message.attrs.to
+
+_getDirectInvitationData = (message) ->
+    child = message.getChild('x')
+    room: child.attrs.jid
 
 class XmppBot extends Adapter
   run: ->
@@ -214,6 +235,16 @@ class XmppBot extends Adapter
       @robot.logger.debug "[sending pong] #{pong}"
       @client.send pong
 
+  handleInvitation: (message, type='direct') =>
+      data =  if type is "direct" then _getDirectInvitationData message \
+                                  else _getMediateInvitationData message
+
+      if data.room
+          @robot.logger.info "Going to join room #{data.room}"
+          @joinRoom data.room
+      else
+          @robot.logger.debug "Room not found"
+
   readMessage: (stanza) =>
     # ignore non-messages
     return if stanza.attrs.type not in ['groupchat', 'direct', 'chat']
@@ -233,6 +264,10 @@ class XmppBot extends Adapter
     user = @robot.brain.userForId from
     user.type = stanza.attrs.type
     user.room = room
+
+    #
+    handleInvitation stanza, 'direct' if _isDirectInvitation stanza
+    handleInvitation stanza, 'mediated' if _isMediatedInvitation stanza
 
     @receive new TextMessage(user, message)
 
