@@ -17,11 +17,12 @@ _notify = (robot, status) ->
   #
   if (jid and org and notifyUrl and username and password)
     urlObj = url.parse(notifyUrl)
+    robot.logger.info util.inspect(urlObj)
+
     parameters = "#{urlObj.pathname}?org=#{org}&status=#{status}&timestamp=#{now}&jid=#{jid}"
     auth = "#{username}:#{password}"
 
     robot.logger.info "Going to notify api status"
-    robot.logger.info util.inspect(urlObj)
     robot.logger.info "Status: #{status}"
     robot.logger.info "Org: #{org}"
     robot.logger.info "Jid: #{jid}"
