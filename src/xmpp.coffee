@@ -31,7 +31,7 @@ _notify = (robot, status) ->
     robot.logger.info "Parameters: #{parameters}"
     robot.logger.info "Auth: #{auth}"
 
-    http.get
+    http.get(
       hostname:
         urlObj.hostname
       port:
@@ -39,7 +39,10 @@ _notify = (robot, status) ->
       path:
         parameters
       auth:
-        auth
+        auth).on 'error', (err) ->
+            robot.logger.error err.toString()
+
+    return
 
 class XmppBot extends Adapter
   run: ->
