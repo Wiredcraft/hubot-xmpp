@@ -125,11 +125,11 @@ class XmppBot extends Adapter
       @robot.logger.info "Hubot avatar content #{avatarContent}"
 
       @client.send do =>
-        el = new Xmpp.Element('iq', from: @client.jid, id:'avatar1', to: room, type: 'set')
+        el = new Xmpp.Element('iq', from: @client.jid, id:'avatar1', type: 'set')
 
         x = el.c('pubsub', xmlns: 'http://jabber.org/protocol/pubsub')
               .c('publish', node: 'urn:xmpp:avatar:data')
-              .c('item', id:avatarId)
+              .c('item', id: avatarId)
               .c('data', xmlns: 'urn:xmpp:avatar:data')
               .t(avatarContent)
 
@@ -143,11 +143,11 @@ class XmppBot extends Adapter
       @robot.logger.info "Hubot avatar id #{avatarId}"
 
       @client.send do =>
-        el = new Xmpp.Element('iq', from: @client.jid, id:'avatar2', to: room, type: 'set')
+        el = new Xmpp.Element('iq', from: @client.jid, id:'avatar2', type: 'set')
 
         x = el.c('pubsub', xmlns: 'http://jabber.org/protocol/pubsub')
               .c('publish', node: 'urn:xmpp:avatar:metadata')
-              .c('item', id:avatarId)
+              .c('item', id: avatarId)
               .c('metadata', xmlns: 'urn:xmpp:avatar:metadata')
               .c('info', width:"64", height:"64", type:"image/png", bytes:4724, id:avatarId)
 
