@@ -1,11 +1,12 @@
 {
-  "name": "hubot-wiredcraft-xmpp",
+  "name": "hubot-octochat",
   "version": "0.1.7",
-  "author": "Mark Story <mark@mark-story.com> (http://mark-story.com)",
-  "description": "XMPP adapter for Hubot.",
+  "author": "info@wiredcraft.com",
+  "description": "Octochat adapter for Hubot.",
   "keywords": [
     "hubot",
     "xmpp",
+    "octochat",
     "adapter"
   ],
   "licenses": [
@@ -15,16 +16,16 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/markstory/hubot-xmpp.git"
+    "url": "git://github.com/Wiredcraft/hubot-octochat.git"
   },
   "bugs": {
-    "url": "http://github.com/markstory/hubot-xmpp/issues"
+    "url": "http://github.com/Wiredcraft/hubot-octochat/issues"
   },
   "scripts": {
     "test": "mocha test/*"
   },
   "main": "./src/xmpp.coffee",
-  "engine": "node > 0.6.0 < 0.8.0",
+  "engine": "node > 0.8.0",
   "dependencies": {
     "node-xmpp": "0.3.2",
     "node-expat": "1.6.1",
