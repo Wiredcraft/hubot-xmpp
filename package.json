@@ -1,5 +1,6 @@
 {
   "name": "hubot-octochat",
+  "private": true,
   "version": "0.1.7",
   "author": "info@wiredcraft.com",
   "description": "Octochat adapter for Hubot.",
@@ -16,10 +17,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/Wiredcraft/hubot-octochat.git"
+    "url": "git://github.com/Wiredcraft/hubot-xmpp.git"
   },
   "bugs": {
-    "url": "http://github.com/Wiredcraft/hubot-octochat/issues"
+    "url": "http://github.com/Wiredcraft/hubot-xmpp/issues"
   },
   "scripts": {
     "test": "mocha test/*"
